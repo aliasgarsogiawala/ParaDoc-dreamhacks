@@ -1,397 +1,52 @@
-import { Button } from "@/components/ui/button";
-import { FeatureCard } from "@/components/ui/feature-card";
-import { HeroWave } from "@/components/ui/hero-wave";
-import { StepCard } from "@/components/ui/step-card";
-import { TestimonialCard } from "@/components/ui/testimonial-card";
-import { ArrowRight, Brain, Heart, Shield } from "lucide-react";
-import Link from "next/link";
+import { Suspense } from "react"
+import { Mic } from "lucide-react"
+import Header from "@/components/header"
+import SymptomInput from "@/components/symptom-input"
+import SimulatedOutcomes from "@/components/simulated-outcomes"
+import InsightSummary from "@/components/insight-summary"
+import ThemeToggle from "@/components/theme-toggle"
+import PageTransition from "@/components/animations/page-transition"
+import BackgroundGradient from "@/components/ui-elements/background-gradient"
+import FloatingActionButton from "@/components/ui-elements/floating-action-button"
+import LoadingScreen from "@/components/loading-screen"
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-white overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-32 overflow-hidden">
-        <HeroWave className="absolute top-0 left-0 w-full h-auto" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-teal-50 rounded-full mb-8">
-              <span className="w-3 h-3 rounded-full bg-teal-400 mr-2"></span>
-              <span className="text-sm font-medium text-teal-800">
-                Revolutionizing Health Education.
-              </span>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-teal-700 via-teal-600 to-emerald-500 bg-clip-text text-transparent">
-              Your Health Journey, Reimagined
-            </h1>
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-              Interactive stories that educate, diagnose, and guide your
-              healthcare decisions through immersive narratives tailored to your
-              needs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                className="group bg-gradient-to-r from-teal-600 to-emerald-500 hover:from-teal-700 hover:to-emerald-600 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                size="lg"
+    <div className="min-h-screen bg-off-white dark:bg-slate-900 transition-colors duration-500 overflow-hidden">
+      <BackgroundGradient />
+
+      <Suspense fallback={<LoadingScreen />}>
+        <PageTransition>
+          <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+            <Header />
+            <main className="mt-8 space-y-16">
+              <Suspense
+                fallback={<div className="h-[300px] flex items-center justify-center">Loading symptom input...</div>}
               >
-                Start Your Journey{" "}
-                <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" />
-              </Button>
-              <Button
-                variant="outline"
-                className="border-2 border-teal-200 text-teal-700 hover:bg-teal-50 text-lg px-8 py-6 rounded-xl"
-                size="lg"
+                <SymptomInput />
+              </Suspense>
+
+              <Suspense
+                fallback={<div className="h-[500px] flex items-center justify-center">Loading outcomes...</div>}
               >
-                How It Works
-              </Button>
+                <SimulatedOutcomes />
+              </Suspense>
+
+              <Suspense
+                fallback={<div className="h-[300px] flex items-center justify-center">Loading insights...</div>}
+              >
+                <InsightSummary />
+              </Suspense>
+            </main>
+
+            <FloatingActionButton icon={<Mic size={24} />} tooltip="Voice Input" position="bottom-right" />
+
+            <div className="fixed top-6 right-6 z-50">
+              <ThemeToggle />
             </div>
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent"></div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Not just stories.{" "}
-              <span className="text-teal-600">Health experiences.</span>
-            </h2>
-            <p className="text-xl text-gray-600">
-              HealthLore combines cutting-edge AI with evidence-based healthcare
-              knowledge to create personalized learning journeys.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <FeatureCard
-              icon={<Brain className="h-8 w-8 text-white" />}
-              title="AI-Powered Stories"
-              description="Immersive healthcare scenarios generated by advanced AI, tailored to your needs and interests."
-              color="from-teal-500 to-emerald-400"
-            />
-            <FeatureCard
-              icon={<Heart className="h-8 w-8 text-white" />}
-              title="Health Insights"
-              description="Receive personalized health nudges and insights based on your in-story decisions."
-              color="from-emerald-500 to-teal-400"
-            />
-            <FeatureCard
-              icon={<Shield className="h-8 w-8 text-white" />}
-              title="Accessible For All"
-              description="Multiple languages, text-to-speech, and keyboard navigation make healthcare accessible to everyone."
-              color="from-teal-400 to-emerald-300"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section className="py-20 bg-gradient-to-br from-teal-50 to-emerald-50 relative">
-        <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent"></div>
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-white rounded-full mb-4">
-              <span className="text-sm font-medium text-teal-800">
-                Simple Process, Powerful Results
-              </span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How HealthLore Works
-            </h2>
-            <p className="text-xl text-gray-600">
-              Three simple steps to transform your health understanding
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <StepCard
-              number="01"
-              title="Choose a Story"
-              description="Select from various health scenarios or let AI create one for you based on your interests."
-            />
-            <StepCard
-              number="02"
-              title="Make Decisions"
-              description="Navigate through the story by making choices that reflect real-life situations and challenges."
-            />
-            <StepCard
-              number="03"
-              title="Receive Insights"
-              description="Get personalized health recommendations based on your decision patterns and behaviors."
-            />
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"></div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Stories from our <span className="text-teal-600">community</span>
-            </h2>
-            <p className="text-xl text-gray-600">
-              See how HealthLore is changing the way people understand and
-              manage their health
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <TestimonialCard
-              quote="HealthLore helped me recognize the early signs of burnout before it became serious. The story about stress management felt like it was written just for me."
-              author="Jamie K."
-              role="Teacher"
-              rating={5}
-            />
-            <TestimonialCard
-              quote="As someone with a family history of diabetes, the interactive stories about nutrition and early warning signs gave me practical knowledge I use every day."
-              author="Michael R."
-              role="Software Engineer"
-              rating={5}
-            />
-            <TestimonialCard
-              quote="The anxiety management story was a game-changer for me. It taught me techniques I now use whenever I feel overwhelmed, in a way that was engaging and not clinical."
-              author="Sarah T."
-              role="Marketing Director"
-              rating={4}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-teal-600 to-emerald-500 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0,0 L100,0 L100,100 L0,100 Z"
-              fill="none"
-              stroke="white"
-              strokeWidth="0.5"
-              vectorEffect="non-scaling-stroke"
-            ></path>
-            <path
-              d="M0,0 C20,40 80,40 100,0 L100,100 L0,100 Z"
-              fill="none"
-              stroke="white"
-              strokeWidth="0.5"
-              vectorEffect="non-scaling-stroke"
-            ></path>
-            <path
-              d="M0,100 C30,60 70,60 100,100"
-              fill="none"
-              stroke="white"
-              strokeWidth="0.5"
-              vectorEffect="non-scaling-stroke"
-            ></path>
-          </svg>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-              Ready to transform your health journey?
-            </h2>
-            <p className="text-xl text-teal-50 mb-10 max-w-2xl mx-auto">
-              Join thousands of users who are improving their health knowledge
-              through interactive storytelling
-            </p>
-            <Button
-              className="group bg-white text-teal-700 hover:bg-teal-50 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-              size="lg"
-            >
-              Get Started Now{" "}
-              <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Heart className="h-6 w-6 text-teal-400" />
-                <span className="text-xl font-bold">HealthLore</span>
-              </div>
-              <p className="text-gray-400 mb-6">
-                Making healthcare education and self-awareness addictive through
-                interactive storytelling.
-              </p>
-              <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-teal-400 transition-colors"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-teal-400 transition-colors"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-teal-400 transition-colors"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Explore</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/stories"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Health Stories
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/stories/create"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Create Story
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Resources</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Help Center
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Health Resources
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Community
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Legal</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Cookie Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-gray-400 hover:text-teal-400 transition-colors"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>© {new Date().getFullYear()} HealthLore. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+        </PageTransition>
+      </Suspense>
     </div>
-  );
+  )
 }
