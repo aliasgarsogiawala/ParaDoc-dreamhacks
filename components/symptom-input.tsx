@@ -9,9 +9,15 @@ import MessageBubble from "@/components/chat/message-bubble";
 // Add this at the top of your component
 type SymptomInputProps = {
   selectedCategory?: string | null;
+  onSubmit?: (symptom: string) => void;
+  isLoading?: boolean;
 };
 
-export default function SymptomInput({ selectedCategory }: SymptomInputProps) {
+export default function SymptomInput({ 
+  selectedCategory, 
+  onSubmit,
+  isLoading: externalLoading = false 
+}: SymptomInputProps) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Array<{content: string; isUser: boolean; timestamp: string}>>([
     {
@@ -20,7 +26,10 @@ export default function SymptomInput({ selectedCategory }: SymptomInputProps) {
       timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
     }
   ]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLocalLoading, setIsLocalLoading] = useState(false);
+  
+  // Use either external or local loading state
+  const isLoading = externalLoading || isLocalLoading;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,19 +42,25 @@ export default function SymptomInput({ selectedCategory }: SymptomInputProps) {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    
+    // Call the onSubmit prop if provided
+    if (onSubmit) {
+      onSubmit(input);
+    }
+    
     setInput("");
-    setIsLoading(true);
+    setIsLocalLoading(true);
 
     // Simulate response delay
     setTimeout(() => {
       const botResponse = {
-        content: "I'm analyzing your symptoms. This is a placeholder response that would normally come from your Gemini API integration.",
+        content: "I'm analyzing your symptoms. Please check the Simulated Outcomes section below for detailed results.",
         isUser: false,
         timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
       };
       
       setMessages(prev => [...prev, botResponse]);
-      setIsLoading(false);
+      setIsLocalLoading(false);
     }, 1500);
   };
 

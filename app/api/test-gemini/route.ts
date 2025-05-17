@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { testGeminiAPI, generateHealthTimelines, debugGeminiAPI } from '@/lib/gemini-text';
+import { testGeminiAPI, generateHealthTimelines, debugGeminiAPI } from '@/lib/gemini';
 
 export async function GET() {
   try {

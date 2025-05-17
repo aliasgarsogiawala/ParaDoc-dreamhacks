@@ -73,10 +73,16 @@ const emergencyWarnings = [
   "Sudden severe headache, especially with neurological symptoms"
 ];
 
+// Import the Gemini API utility
+import { generateMedicalSimulation } from "@/utils/gemini-api";
+
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentTip, setCurrentTip] = useState(healthTips[0]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  // Add state for simulation results
+  const [simulationResults, setSimulationResults] = useState(null);
+  const [isSimulating, setIsSimulating] = useState(false);
 
   useEffect(() => {
     // Simulate loading for smooth entrance
@@ -345,7 +351,11 @@ export default function Home() {
                       </div>
                     }
                   >
-                    <SymptomInput selectedCategory={selectedCategory} />
+                    <SymptomInput 
+                      selectedCategory={selectedCategory} 
+                      onSubmit={handleSymptomSubmit}
+                      isLoading={isSimulating}
+                    />
                   </Suspense>
                 </div>
               </motion.div>
@@ -364,7 +374,7 @@ export default function Home() {
                 }}
                 className="relative"
               >
-                <SimulatedOutcomes />
+                <SimulatedOutcomes results={simulationResults} />
               </motion.div>
 
               {/* Emergency Warning Signs */}
@@ -476,3 +486,5 @@ export default function Home() {
     </div>
   );
 }
+
+// Add a function to handle symptom submission
