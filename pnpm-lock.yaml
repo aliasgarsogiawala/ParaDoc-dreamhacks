@@ -163,17 +163,10 @@ importers:
         version: 3.24.4
     devDependencies:
       '@types/node':
-<<<<<<< HEAD
-        specifier: ^22
-        version: 22.15.18
-      '@types/react':
-        specifier: ^19
-=======
         specifier: ^22.15.18
         version: 22.15.18
       '@types/react':
         specifier: ^19.1.4
->>>>>>> e733d382d3ad42fcbfc0a37ba8b0b13a051dc667
         version: 19.1.4
       '@types/react-dom':
         specifier: ^19
@@ -185,11 +178,7 @@ importers:
         specifier: ^3.4.17
         version: 3.4.17
       typescript:
-<<<<<<< HEAD
-        specifier: ^5
-=======
         specifier: ^5.8.3
->>>>>>> e733d382d3ad42fcbfc0a37ba8b0b13a051dc667
         version: 5.8.3
 
 packages:
