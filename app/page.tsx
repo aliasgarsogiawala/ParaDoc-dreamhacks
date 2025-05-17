@@ -1,13 +1,10 @@
 import { Suspense } from "react"
-import { Mic } from "lucide-react"
+import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 import Header from "@/components/header"
-import SymptomInput from "@/components/symptom-input"
-import SimulatedOutcomes from "@/components/simulated-outcomes"
-import InsightSummary from "@/components/insight-summary"
 import ThemeToggle from "@/components/theme-toggle"
 import PageTransition from "@/components/animations/page-transition"
 import BackgroundGradient from "@/components/ui-elements/background-gradient"
-import FloatingActionButton from "@/components/ui-elements/floating-action-button"
 import LoadingScreen from "@/components/loading-screen"
 
 export default function Home() {
@@ -19,27 +16,40 @@ export default function Home() {
         <PageTransition>
           <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
             <Header />
-            <main className="mt-8 space-y-16">
-              <Suspense
-                fallback={<div className="h-[300px] flex items-center justify-center">Loading symptom input...</div>}
+            
+            <main className="mt-16 flex flex-col items-center justify-center text-center">
+              <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+                Welcome to DreamHacks Health Simulator
+              </h1>
+              
+              <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mb-10">
+                Explore potential health outcomes based on your symptoms and receive personalized insights
+                to better understand your health journey.
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mb-16">
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                  <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Symptom Analysis</h2>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
+                    Input your symptoms and receive AI-powered analysis of potential conditions and outcomes.
+                  </p>
+                </div>
+                
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                  <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Health Insights</h2>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
+                    Get personalized recommendations and insights based on your health profile and symptoms.
+                  </p>
+                </div>
+              </div>
+              
+              <Link 
+                href="/chat" 
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-full transition-colors"
               >
-                <SymptomInput />
-              </Suspense>
-
-              <Suspense
-                fallback={<div className="h-[500px] flex items-center justify-center">Loading outcomes...</div>}
-              >
-                <SimulatedOutcomes />
-              </Suspense>
-
-              <Suspense
-                fallback={<div className="h-[300px] flex items-center justify-center">Loading insights...</div>}
-              >
-                <InsightSummary />
-              </Suspense>
+                Get Started <ArrowRight size={20} />
+              </Link>
             </main>
-
-            <FloatingActionButton icon={<Mic size={24} />} tooltip="Voice Input" position="bottom-right" />
 
             <div className="fixed top-6 right-6 z-50">
               <ThemeToggle />
