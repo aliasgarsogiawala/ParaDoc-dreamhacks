@@ -1,6 +1,5 @@
-// filepath: d:\Projects\Dream Hacks\dreamhacks\app\api\test-gemini\route.ts
 import { NextResponse } from 'next/server';
-import { testGeminiAPI, generateHealthTimelines } from '@/lib/gemini';
+import { testGeminiAPI, generateHealthTimelines, debugGeminiAPI } from '@/lib/gemini-text';
 
 export async function GET() {
   try {
@@ -21,7 +20,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { symptom, choices } = body;
+    const { symptom, choices, includeImages = true } = body;
     
     if (!symptom) {
       return NextResponse.json({
