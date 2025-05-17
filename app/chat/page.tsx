@@ -7,6 +7,7 @@ import LoadingScreen from "@/components/loading-screen";
 import SymptomInput from "@/components/symptom-input";
 import ThemeToggle from "@/components/theme-toggle";
 import FloatingActionButton from "@/components/ui-elements/floating-action-button";
+import SimulatedOutcomes from "@/components/simulated-outcomes";
 import { Mic, ExternalLink, Heart, BookOpen, Lightbulb, ArrowRight, Activity, Thermometer, Pill, Brain } from "lucide-react";
 import { Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -231,7 +232,7 @@ export default function Home() {
 
       <Suspense fallback={<LoadingScreen />}>
         <PageTransition>
-          <div className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+          <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -347,6 +348,23 @@ export default function Home() {
                     <SymptomInput selectedCategory={selectedCategory} />
                   </Suspense>
                 </div>
+              </motion.div>
+
+              {/* Simulated Outcomes */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: isLoaded ? 1 : 0, 
+                  y: isLoaded ? 0 : 20 
+                }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 0.25,
+                  ease: "easeOut" 
+                }}
+                className="relative"
+              >
+                <SimulatedOutcomes />
               </motion.div>
 
               {/* Emergency Warning Signs */}
