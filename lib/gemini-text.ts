@@ -1,4 +1,8 @@
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
+} from "@google/generative-ai";
 
 // Your API key
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "your-api-key-here";
@@ -26,85 +30,107 @@ const safetySettings = [
   },
 ];
 
-export async function generateHealthTimelines(symptom: string, choices: string[] = ["do nothing", "seek professional help", "self-medicate"]) {
+export async function generateHealthTimelines(
+  symptom: string,
+  choices: string[] = ["do nothing", "seek professional help", "self-medicate"]
+) {
   try {
     if (!API_KEY || API_KEY === "your-api-key-here") {
       console.error("API key not configured properly");
-      return { 
-        error: "API key not configured. Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables.",
-        details: "Configuration Error" 
+      return {
+        error:
+          "API key not configured. Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables.",
+        details: "Configuration Error",
       };
     }
     // For Gemini Pro
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash", safetySettings });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash",
+      safetySettings,
+    });
 
     const prompt = `
-    You are a medical simulation AI that shows possible future outcomes for health conditions based on different courses of action. 
-    
-    SYMPTOM DESCRIPTION: "${symptom}"
+    You are a medical simulation AI that generates possible future outcomes based on a person's symptoms and potential decisions.
 
-    Generate three different 7-day timelines showing how this condition might progress under these three different scenarios:
-    1. If the patient chooses to: ${choices[0]}
-    2. If the patient chooses to: ${choices[1]}
-    3. If the patient chooses to: ${choices[2]}
+    ---
 
-    For each timeline:
-    - Show what might happen on days 1, 3, 5, and 7
-    - Include symptom progression, potential complications, and effects on daily life
-    - Assign a risk percentage (0-100%) indicating the overall risk of this approach
-    - Assign a recovery percentage (0-100%) indicating likely recovery with this approach
+    **SYMPTOM DESCRIPTION:**  
+    "${symptom}"
 
-    Finally, provide a "BEST PATH" recommendation with a brief justification.
+    ---
 
-    Format the response as a JSON object with the following structure:
+    Your task:
+
+    1. Based on the complexity and ambiguity of the symptom described, generate **between 5 to 7 unique decision paths** a patient might realistically consider. Do not always assume 3. Simple symptoms might yield 2–3 paths, complex ones up to 7.
+    2. Each decision path must describe a clearly distinct action the patient could take (e.g., doing nothing, visiting a clinic, self-medicating, consulting a friend, trying alternative therapy, etc.).
+    3. For each path, simulate a 7-day progression (Days 1 through 7). Include:
+       - Daily symptom progression
+       - Complications or improvements
+       - Impact on daily life or mental health
+    4. Assign two metrics per path:
+       - **Risk percentage** (0–100): how dangerous this path is
+       - **Recovery percentage** (0–100): likelihood of improvement or full recovery by Day 7
+
+    After generating all paths, identify **which path (if any)** leads to the best health outcome. The "best" path should balance recovery, risk, and practical accessibility. If no path is clearly superior, set bestPath to "null".
+
+    ---
+
+    **Return response as valid JSON:**
+
     {
       "timelines": [
         {
-          "path": "Path name (e.g., 'Do Nothing')",
-          "action": "The action taken",
+          "path": "Short title of this path (e.g. 'Self-medicate at home')",
+          "action": "Full sentence describing the decision taken",
           "days": [
-            {"day": 1, "description": "What happens on day 1"},
-            {"day": 3, "description": "What happens on day 3"},
-            {"day": 5, "description": "What happens on day 5"},
-            {"day": 7, "description": "What happens on day 7"}
+            {"day": 1, "description": "..."},
+            {"day": 2, "description": "..."},
+            {"day": 3, "description": "..."},
+            {"day": 4, "description": "..."},
+            {"day": 5, "description": "..."},
+            {"day": 6, "description": "..."},
+            {"day": 7, "description": "..."}
           ],
-          "riskPercentage": 75,
-          "recoveryPercentage": 25
-        },
-        // Two more timelines here
+          "riskPercentage": 0-100,
+          "recoveryPercentage": 0-100
+        }
+        // more path objects, as needed
       ],
       "bestPath": {
-        "pathIndex": 0, // Index of the recommended path (0, 1, or 2)
-        "explanation": "Explanation of why this is the best path"
-      }
+        "pathIndex": 0, // index of the best timeline, or null if no path is clearly superior
+        "explanation": "Why this path is best, or a statement explaining why no clear winner exists"
+      },
+      "disclaimer": "This is a fictional simulation generated by an AI for educational and awareness purposes only. It is not medical advice. Always consult a licensed medical professional for real-life concerns."
     }
-    
-    IMPORTANT: Include a clear disclaimer at the end that this is not professional medical advice.
-    `;
+    ---
+
+    Be realistic. Some outcomes can worsen even under well-intentioned decisions. Avoid repetitive paths. Include uncertainty and variability where appropriate.
+        `;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    
+
     // Extract JSON from the response
-    const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/) || text.match(/{[\s\S]*}/);
+    const jsonMatch =
+      text.match(/```json\n([\s\S]*?)\n```/) || text.match(/{[\s\S]*}/);
     const jsonData = jsonMatch ? jsonMatch[1] || jsonMatch[0] : text;
-    
+
     try {
       return JSON.parse(jsonData);
     } catch (e) {
       console.error("Failed to parse JSON from Gemini response", e);
       console.log("Raw response:", text);
-      return { 
-        error: "Failed to parse timeline data", 
-        rawResponse: text 
+      return {
+        error: "Failed to parse timeline data",
+        rawResponse: text,
       };
     }
   } catch (error) {
     console.error("Error generating health timelines:", error);
-    return { 
-      error: "Failed to generate timelines. Please try again.", 
-      details: error instanceof Error ? error.message : String(error)
+    return {
+      error: "Failed to generate timelines. Please try again.",
+      details: error instanceof Error ? error.message : String(error),
     };
   }
 }
@@ -113,7 +139,9 @@ export async function generateHealthTimelines(symptom: string, choices: string[]
 export async function testGeminiAPI() {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const result = await model.generateContent("Hello, can you confirm this API test is working?");
+    const result = await model.generateContent(
+      "Hello, can you confirm this API test is working?"
+    );
     const response = await result.response;
     return {
       success: true,
@@ -136,29 +164,32 @@ export async function debugGeminiAPI() {
       return {
         success: false,
         error: "API key not configured properly",
-        details: "Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables"
+        details:
+          "Please set NEXT_PUBLIC_GEMINI_API_KEY in your environment variables",
       };
     }
 
     // Try to create model instance (will fail if API key is invalid)
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    
+
     // Simple test prompt
-    const result = await model.generateContent("Reply with only the word 'SUCCESS' if you can see this message.");
-    
+    const result = await model.generateContent(
+      "Reply with only the word 'SUCCESS' if you can see this message."
+    );
+
     const response = await result.response;
     const text = response.text();
-    
+
     return {
       success: true,
       message: text,
-      apiKeyConfigured: API_KEY !== "your-api-key-here"
+      apiKeyConfigured: API_KEY !== "your-api-key-here",
     };
   } catch (error) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
-      details: JSON.stringify(error, null, 2)
+      details: JSON.stringify(error, null, 2),
     };
   }
 }

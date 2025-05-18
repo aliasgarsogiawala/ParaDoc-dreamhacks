@@ -1,0 +1,225 @@
+{
+  "timelines": [
+    {
+      "path": "Do Nothing",
+      "action": "The patient decides to wait and see if the vomiting resolves on its own without intervention.",
+      "days": [
+        {
+          "day": 1,
+          "description": "Vomiting continues frequently. Feeling weak and dehydrated. Unable to eat or drink much."
+        },
+        {
+          "day": 2,
+          "description": "Vomiting persists, possibly bile. Severe abdominal cramps and dizziness. No energy to do anything."
+        },
+        {
+          "day": 3,
+          "description": "Vomiting starts to reduce in frequency, but still present. Dehydration symptoms worsen (dry mouth, decreased urination)."
+        },
+        {
+          "day": 4,
+          "description": "Vomiting stops, but nausea remains. Severe fatigue and headache. Starting to sip clear fluids."
+        },
+        {
+          "day": 5,
+          "description": "Nausea gradually improves. Able to tolerate small amounts of bland food (crackers, toast)."
+        },
+        {
+          "day": 6,
+          "description": "Appetite slowly returns. Still weak, but able to perform light activities."
+        },
+        {
+          "day": 7,
+          "description": "Feeling significantly better. Energy levels slowly improving. Able to eat regular meals in small portions."
+        }
+      ],
+      "riskPercentage": 60,
+      "recoveryPercentage": 60
+    },
+    {
+      "path": "Over-the-Counter Anti-Emetic",
+      "action": "The patient takes an over-the-counter anti-emetic medication (like dimenhydrinate or meclizine) purchased from a pharmacy.",
+      "days": [
+        {
+          "day": 1,
+          "description": "Continues to vomit, but takes anti-emetic. Feels drowsy due to medication side effect."
+        },
+        {
+          "day": 2,
+          "description": "Vomiting slightly less frequent, but still experiencing nausea and dizziness. Side effects of medication persist."
+        },
+        {
+          "day": 3,
+          "description": "Vomiting significantly reduced. Able to keep down small sips of water. Still fatigued."
+        },
+        {
+          "day": 4,
+          "description": "Vomiting stops completely. Nausea gradually subsides. Starts eating plain crackers."
+        },
+        {
+          "day": 5,
+          "description": "Appetite slowly returning. Mild nausea returns if stomach is empty for too long. Fatigue decreasing."
+        },
+        {
+          "day": 6,
+          "description": "Eating larger portions of bland food. Drowsiness from medication has worn off. Weakness persists."
+        },
+        {
+          "day": 7,
+          "description": "Feeling much better. Energy returning to normal levels. Able to resume normal activities."
+        }
+      ],
+      "riskPercentage": 30,
+      "recoveryPercentage": 80
+    },
+    {
+      "path": "Home Remedies (Ginger)",
+      "action": "The patient tries ginger (tea, candies, or capsules) to alleviate the vomiting.",
+      "days": [
+        {
+          "day": 1,
+          "description": "Vomiting continues, tries ginger tea, minimal improvement."
+        },
+        {
+          "day": 2,
+          "description": "Still vomiting, but possibly slightly less intense. Continues ginger tea, also tries ginger candies."
+        },
+        {
+          "day": 3,
+          "description": "Vomiting frequency might be slightly decreasing, but difficult to ascertain reliably. Continues ginger remedies."
+        },
+        {
+          "day": 4,
+          "description": "Vomiting continues intermittently. Starting to feel dehydrated despite ginger consumption."
+        },
+        {
+          "day": 5,
+          "description": "Vomiting finally subsides, potentially due to time rather than ginger. Significant fatigue."
+        },
+        {
+          "day": 6,
+          "description": "Nausea lingers, but no vomiting. Able to keep down small amounts of bland food."
+        },
+        {
+          "day": 7,
+          "description": "Feeling improved, but still weak. Appetite slowly returning. Ginger no longer needed."
+        }
+      ],
+      "riskPercentage": 45,
+      "recoveryPercentage": 65
+    },
+    {
+      "path": "Urgent Care Visit",
+      "action": "The patient immediately visits an urgent care clinic for evaluation and treatment.",
+      "days": [
+        {
+          "day": 1,
+          "description": "Visits urgent care, diagnosed with possible viral gastroenteritis. Receives IV fluids for dehydration and an anti-emetic injection. Feels immediate relief."
+        },
+        {
+          "day": 2,
+          "description": "Nausea persists, but no vomiting. Able to tolerate clear liquids. Resting at home."
+        },
+        {
+          "day": 3,
+          "description": "Nausea continues to decrease. Starts eating small amounts of bland food (toast, crackers)."
+        },
+        {
+          "day": 4,
+          "description": "Appetite slowly returns. Feeling stronger. No vomiting or significant nausea."
+        },
+        {
+          "day": 5,
+          "description": "Eating regular meals in small portions. Weakness gradually improving."
+        },
+        {
+          "day": 6,
+          "description": "Energy levels almost back to normal. Able to perform light activities."
+        },
+        {
+          "day": 7,
+          "description": "Feeling fully recovered. Resumes normal activities and diet."
+        }
+      ],
+      "riskPercentage": 10,
+      "recoveryPercentage": 95
+    },
+    {
+      "path": "Consult a Friend/Family (No Medical Background)",
+      "action": "The patient seeks advice from a friend or family member without medical expertise.",
+      "days": [
+        {
+          "day": 1,
+          "description": "Vomiting continues. Friend suggests resting and drinking clear fluids (which the patient struggles to keep down)."
+        },
+        {
+          "day": 2,
+          "description": "Vomiting persists. Friend suggests trying ginger ale. Dehydration worsens."
+        },
+        {
+          "day": 3,
+          "description": "Vomiting continues. Feeling increasingly weak. Friend advises to 'wait it out'."
+        },
+        {
+          "day": 4,
+          "description": "Vomiting slightly decreases, possibly due to exhaustion. Severe dehydration. Weakness and dizziness."
+        },
+        {
+          "day": 5,
+          "description": "Vomiting continues intermittently. Starts experiencing muscle cramps due to electrolyte imbalance."
+        },
+        {
+          "day": 6,
+          "description": "Weak and unable to eat. Symptoms slowly decreasing. Still unable to do much."
+        },
+        {
+          "day": 7,
+          "description": "Symptoms continue to slowly decrease. Still feeling very weak."
+        }
+      ],
+      "riskPercentage": 70,
+      "recoveryPercentage": 40
+    },
+    {
+      "path": "Self-Medicate with Leftover Antibiotics",
+      "action": "The patient self-treats with leftover antibiotics from a previous, unrelated illness, assuming it will help.",
+      "days": [
+        {
+          "day": 1,
+          "description": "Vomiting continues. Takes antibiotic. No immediate effect."
+        },
+        {
+          "day": 2,
+          "description": "Vomiting persists. Antibiotic ineffective. May experience additional nausea as a side effect."
+        },
+        {
+          "day": 3,
+          "description": "Vomiting continues. Experiencing abdominal discomfort, possibly from the antibiotic disrupting gut flora."
+        },
+        {
+          "day": 4,
+          "description": "Vomiting possibly slightly reduced, but could be coincidental. Weak and dehydrated."
+        },
+        {
+          "day": 5,
+          "description": "Vomiting less frequent, possible starting point for a very slow recovery but antibiotics made no difference."
+        },
+        {
+          "day": 6,
+          "description": "Slow recovery but very weak. Possible antibiotic resistance created."
+        },
+        {
+          "day": 7,
+          "description": "Slow recovery continues. Increased antibiotic resistant pathogen in system."
+        }
+      ],
+      "riskPercentage": 85,
+      "recoveryPercentage": 55
+    }
+  ],
+  "bestPath": {
+    "pathIndex": 3,
+    "explanation": "Visiting urgent care offers the best balance of rapid recovery, low risk, and definitive diagnosis. The IV fluids and anti-emetic injection provide immediate relief and address dehydration, leading to the fastest recovery."
+  },
+  "disclaimer": "This is a fictional simulation generated by an AI for educational and awareness purposes only. It is not medical advice. Always consult a licensed medical professional for real-life concerns."
+}

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:all": "concurrently \"pnpm run dev\" \"pnpm run dev:convex\"",
+    "dev:convex": "pnpm dlx convex dev",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -45,6 +47,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "concurrently": "^9.1.2",
     "convex": "1.21.1-alpha.1",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",

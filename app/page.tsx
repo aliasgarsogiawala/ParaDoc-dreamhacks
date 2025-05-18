@@ -4,30 +4,27 @@ import Hero from "@/components/hero";
 import InsightSummary from "@/components/insight-summary";
 import SimulatedOutcomes from "@/components/simulated-outcomes";
 import SplashScreen from "@/components/splash-screen";
-import ThemeToggle from "@/components/theme-toggle";
 import FloatingActionButton from "@/components/ui-elements/floating-action-button";
-import { Button } from "@/components/ui/button";
 import { HeroWave } from "@/components/ui/hero-wave";
-import { ArrowRight, Mic } from "lucide-react";
-import Link from "next/link";
-import { Suspense, useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { Mic } from "lucide-react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
+  const {} = useUser();
   const [showMainContent, setShowMainContent] = useState(false);
 
   useEffect(() => {
-    // This ensures we only show main content after splash screen is done
     const timer = setTimeout(() => {
       setShowMainContent(true);
-    }, 5100); // Set slightly longer than splash screen duration (5000ms)
-    
+    }, 5100);
+
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
       <SplashScreen />
-      
       {showMainContent && (
         <PageTransition>
           <section className="relative pt-20 pb-32 overflow-hidden min-h-screen flex items-center justify-center">
@@ -57,7 +54,6 @@ export default function Home() {
                 <InsightSummary />
               </Suspense>
             </main>
-
             <FloatingActionButton
               icon={<Mic size={24} />}
               tooltip="Voice Input"
