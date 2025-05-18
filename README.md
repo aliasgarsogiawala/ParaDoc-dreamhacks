@@ -78,15 +78,6 @@ Visit `http://localhost:3000` to start using ParaDoc.
 
 ParaDoc is a simulation tool designed for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
 
-## 🧪 Testing
-
-```bash
-# Run tests
-pnpm run test
-
-# Run linting
-pnpm run lint
-```
 
 ## 🙏 Acknowledgments
 
