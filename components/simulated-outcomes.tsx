@@ -321,9 +321,9 @@ export default function SimulatedOutcomes({ results }: SimulatedOutcomesProps) {
             defaultValue={paths.length > 0 ? paths[0].id : "path-0"}
             value={activeTab}
             onValueChange={setActiveTab}
-            className="w-full"
+            className="w-full "
           >
-            <TabsList className="flex flex-wrap gap-1 mb-8  bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-sm">
+            <TabsList className="grid grid-cols-3  gap-1 mb-8  bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-sm">
               {paths.map((path) => (
                 <TabsTrigger
                   key={path.id}
@@ -362,7 +362,7 @@ export default function SimulatedOutcomes({ results }: SimulatedOutcomesProps) {
               ))}
             </TabsList>
 
-            <div className="relative mt-20 md:mt-0">
+            <div className="relative mt-24">
               {paths.map((path) => (
                 <TabsContent
                   key={path.id}
