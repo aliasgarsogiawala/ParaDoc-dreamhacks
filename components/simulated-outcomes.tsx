@@ -362,7 +362,7 @@ export default function SimulatedOutcomes({ results }: SimulatedOutcomesProps) {
               ))}
             </TabsList>
 
-            <div className="relative mt-24">
+            <div className="relative mt-14">
               {paths.map((path) => (
                 <TabsContent
                   key={path.id}
