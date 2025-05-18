@@ -63,10 +63,6 @@ export default function Home() {
               tooltip="Voice Input"
               position="bottom-right"
             />
-
-            <div className="fixed top-6 right-6 z-50">
-              <ThemeToggle />
-            </div>
           </div>
         </PageTransition>
       )}

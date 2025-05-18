@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.19.4",
     "@emotion/is-prop-valid": "latest",
     "@google/genai": "^0.14.1",
     "@google/generative-ai": "^0.24.1",
@@ -44,6 +45,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "convex": "1.21.1-alpha.1",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
     "framer-motion": "latest",
@@ -62,6 +64,9 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.6",
     "zod": "^3.24.1"
+  },
+  "overrides": {
+    "convex": "1.21.1-alpha.1"
   },
   "devDependencies": {
     "@types/node": "^22.15.18",

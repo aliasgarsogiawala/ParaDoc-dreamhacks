@@ -1,4 +1,3 @@
-import { Heart } from "lucide-react";
 import Link from "next/link";
 
 const Footer = () => {
@@ -8,8 +7,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Heart className="h-6 w-6 text-teal-400" />
-              <span className="text-xl font-bold">HealthLore</span>
+              <span className="text-xl font-bold">ParaDoc</span>
             </div>
             <p className="text-gray-400 mb-6">
               Making healthcare education and self-awareness addictive through

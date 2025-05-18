@@ -21,7 +21,10 @@ const Hero = () => {
           profile.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-300">
-          <Link href={"/chat"} className="transition-transform hover:scale-105">
+          <Link
+            href={"/sign-in"}
+            className="transition-transform hover:scale-105"
+          >
             <Button
               className="group bg-gradient-to-r from-teal-600 to-emerald-500 hover:from-teal-700 hover:to-emerald-600 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               size="lg"

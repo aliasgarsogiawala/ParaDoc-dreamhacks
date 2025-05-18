@@ -7,6 +7,8 @@ import SimulatedOutcomes from "@/components/simulated-outcomes";
 import SymptomInput from "@/components/symptom-input";
 import ThemeToggle from "@/components/theme-toggle";
 import FloatingActionButton from "@/components/ui-elements/floating-action-button";
+import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity,
@@ -23,6 +25,7 @@ import {
   Thermometer,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 // Health tips that will rotate
@@ -124,6 +127,8 @@ const emergencyWarnings = [
 // Import the Gemini API utility
 
 export default function Home() {
+  const router = useRouter();
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentTip, setCurrentTip] = useState(healthTips[0]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -565,7 +570,17 @@ export default function Home() {
             />
 
             <div className="fixed top-6 right-6 z-50">
-              <ThemeToggle />
+            <SignedOut>
+              <Button 
+                onClick={() => router.push("/sign-in")}
+                className="bg-gradient-to-r from-rose-400 to-purple-400 dark:from-rose-500 dark:to-purple-500 text-white hover:from-rose-500 hover:to-purple-500 dark:hover:from-rose-600 dark:hover:to-purple-600 transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                Sign In
+              </Button>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
             </div>
           </div>
         </PageTransition>
