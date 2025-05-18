@@ -74,6 +74,29 @@ Visit `http://localhost:3000` to start using ParaDoc.
 - **Timeline**: Custom React components for timeline visualization
 - **Risk Logic**: AI-based scoring model using symptom severity and progression
 
+## 🚀 Future Enhancements
+
+### 💬 Persistent Chat History
+- Save conversation history between sessions
+- Review past symptoms and timeline simulations
+- Track health changes over time with historical context
+
+### 🤖 Multiple AI Model Options
+- Switch between different AI models (Gemini, GPT-4, Claude)
+- Compare simulations across different AI perspectives
+- Choose models optimized for specific medical domains or conditions
+
+### 🎨 Comic-Style Symptom Visualizations
+- Sequential comic panels showing symptom progression
+- Visual storytelling with expressive character illustrations
+- Day-by-day visual representation of each timeline path
+- Educational, non-graphic representations of medical concepts
+
+### 📱 Mobile App Version
+- Native mobile experience for iOS and Android
+- Offline mode for viewing saved simulations
+- Push notifications for follow-up reminders
+
 ## ⚠️ Important Disclaimer
 
 ParaDoc is a simulation tool designed for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
