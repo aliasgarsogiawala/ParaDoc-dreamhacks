@@ -4,7 +4,7 @@ import PageTransition from "@/components/animations/page-transition";
 import Header from "@/components/header";
 import LoadingScreen from "@/components/loading-screen";
 import SimulatedOutcomes from "@/components/simulated-outcomes";
-import SymptomInput from "@/components/symptom-input";
+import SymptomInput, { ResultData } from "@/components/symptom-input";
 import ThemeToggle from "@/components/theme-toggle";
 import FloatingActionButton from "@/components/ui-elements/floating-action-button";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { generateMedicalSimulation } from "@/utils/gemini-api";
 
 // Health tips that will rotate
 const healthTips = [
@@ -133,8 +132,8 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentTip, setCurrentTip] = useState(healthTips[0]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  // Add state for simulation results
-  const [simulationResults, setSimulationResults] = useState(null);
+  // Update the type of simulationResults state
+  const [simulationResults, setSimulationResults] = useState<ResultData | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
   useEffect(() => {
@@ -159,6 +158,9 @@ export default function Home() {
   // We're now handling the API call directly in the SymptomInput component
   // This function just provides a hook for potential future functionality or logging
   console.log("Symptom submitted:", symptom);
+  
+  // We'll need to add a way to get the simulation results from the SymptomInput component
+  // This will be done by modifying the SymptomInput component to emit the results
 };
 
   return (
@@ -426,6 +428,7 @@ export default function Home() {
                     <SymptomInput
                       selectedCategory={selectedCategory}
                       onSubmit={handleSymptomSubmit}
+                      onSimulationResult={setSimulationResults}
                       isLoading={isSimulating}
                     />
                   </Suspense>
@@ -593,5 +596,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Add a function to handle symptom submission

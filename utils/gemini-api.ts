@@ -25,14 +25,16 @@ export type SimulationResult = {
 };
 
 /**
- * Generates medical simulation based on the provided symptom description
+ * Generates medical simulation based on the provided symptom description with abort capability
  * 
  * @param symptom The user's symptom description
+ * @param signal AbortSignal to cancel the request
  * @param choices Array of choices to simulate different timelines
  * @returns The simulated timeline results from the API
  */
-export async function generateMedicalSimulation(
-  symptom: string, 
+export async function generateMedicalSimulationWithAbort(
+  symptom: string,
+  signal?: AbortSignal,
   choices: TimelineChoice[] = ['do nothing', 'seek medical attention', 'self-medicate with over-the-counter remedies']
 ): Promise<SimulationResult> {
   try {
@@ -45,6 +47,7 @@ export async function generateMedicalSimulation(
         symptom,
         choices
       }),
+      signal, // Pass the abort signal to fetch
     });
     
     if (!response.ok) {

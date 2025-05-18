@@ -1,17 +1,16 @@
-import {
-  generateMedicalSimulation,
-  SimulationResult,
-} from "@/utils/gemini-api";
+import { SimulationResult, TimelineChoice } from "@/utils/gemini-api";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, StopCircleIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Avatar } from "./ui/avatar";
 import { Button } from "./ui/button";
 
 // Add this at the top of your component
+// Update the SymptomInputProps type
 type SymptomInputProps = {
   selectedCategory?: string | null;
   onSubmit?: (symptom: string) => void;
+  onSimulationResult?: (result: ResultData) => void; // Add this line
   isLoading?: boolean;
 };
 
@@ -27,7 +26,8 @@ interface Timeline {
   recoveryPercentage: number;
 }
 
-interface ResultData {
+// Export the interface so it can be imported in other files
+export interface ResultData {
   timelines: Timeline[];
   bestPath: {
     pathIndex: number;
@@ -37,10 +37,12 @@ interface ResultData {
 }
 
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function SymptomInput({
   selectedCategory,
   onSubmit,
+  onSimulationResult, // Add this parameter
   isLoading: externalLoading = false,
 }: SymptomInputProps) {
   const { user } = useUser();
@@ -64,6 +66,8 @@ export default function SymptomInput({
     },
   ]);
   const [isLocalLoading, setIsLocalLoading] = useState(false);
+  // Add a ref to store the current abort controller
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Create a ref for the messages container
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -81,15 +85,54 @@ export default function SymptomInput({
     if (messagesEndRef.current) {
       // Get the parent container (chat window)
       const chatContainer = messagesEndRef.current.parentElement;
-      
+
       // Only scroll the chat container, not the whole page
       if (chatContainer) {
         chatContainer.scrollTo({
           top: chatContainer.scrollHeight,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }
     }
+  };
+
+  // Add a function to handle cancellation
+  const handleCancelSubmission = () => {
+    toast.loading("Cancelling request...");
+
+    // Abort the fetch request if there's an active controller
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+
+    // Update the UI state
+    setIsLocalLoading(false);
+
+    // Remove the processing message if it exists
+    setMessages((prev) => {
+      const lastMessage = prev[prev.length - 1];
+      if (
+        !lastMessage.isUser &&
+        lastMessage.content.includes("analyzing your symptoms")
+      ) {
+        return prev.slice(0, -1);
+      }
+      return prev;
+    });
+
+    // Add a cancellation message
+    setMessages((prev) => [
+      ...prev,
+      {
+        content: "Request cancelled. Feel free to ask another question.",
+        isUser: false,
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      },
+    ]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,12 +156,16 @@ export default function SymptomInput({
     }
 
     // Prepare symptom with category context if available
-    const symptomWithContext = selectedCategory 
+    const symptomWithContext = selectedCategory
       ? `[Category: ${selectedCategory}] ${input}`
       : `[Category: General] ${input}`;
-      
+
     setInput("");
     setIsLocalLoading(true);
+
+    // Create a new AbortController for this request
+    abortControllerRef.current = new AbortController();
+    const signal = abortControllerRef.current.signal;
 
     try {
       // Call the Gemini API
@@ -135,13 +182,29 @@ export default function SymptomInput({
       // Add a processing message
       setMessages((prev) => [...prev, processingMessage]);
 
-      // Call the API
+      // Call the API with the abort signal
       let result;
       try {
-        result = await generateMedicalSimulation(symptomWithContext);
+        result = await generateMedicalSimulationWithAbort(
+          symptomWithContext,
+          signal
+        );
         console.log("API result:", result); // Log the result for debugging
+        
+        // Check if the result matches the ResultData structure
+        if (result && 'timelines' in result && Array.isArray(result.timelines) && onSimulationResult) {
+          onSimulationResult(result as unknown as ResultData);
+        }
+
+        toast.success("Symptoms processed successfully!");
       } catch (apiError) {
+        toast.error("Failed to process symptoms. Please try again.");
         console.error("API error:", apiError);
+        // Check if this is an abort error
+        if (apiError instanceof Error && apiError.name === "AbortError") {
+          console.log("Request was aborted");
+          return; // Exit early, the cancel handler will update the UI
+        }
         throw apiError; // Re-throw to be caught by outer catch
       }
 
@@ -177,6 +240,7 @@ export default function SymptomInput({
       setMessages((prev) => [...prev.slice(0, -1), errorMessage]);
     } finally {
       setIsLocalLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -311,17 +375,6 @@ export default function SymptomInput({
               }`}
             >
               <div className="flex items-center mb-1">
-                {!msg.isUser && (
-                  <Avatar className="h-6 w-6 mr-2 ring-2 ring-rose-200 dark:ring-rose-500 ring-offset-1">
-                    <AvatarImage
-                      src="/images/paradoc-avatar.png"
-                      alt="ParaDoc"
-                    />
-                    <div className="bg-gradient-to-br from-rose-300 to-rose-200 dark:from-rose-600 dark:to-rose-700 h-full w-full rounded-full flex items-center justify-center text-xs font-medium">
-                      P
-                    </div>
-                  </Avatar>
-                )}
                 {msg.isUser && user && (
                   <Avatar className="h-6 w-6 mr-2 ring-2 ring-rose-200 dark:ring-rose-500 ring-offset-1">
                     <AvatarImage
@@ -340,7 +393,8 @@ export default function SymptomInput({
                       : "text-gray-500 dark:text-gray-400"
                   }`}
                 >
-                  {msg.isUser ? (user?.fullName || "You") : "ParaDoc"} • {msg.timestamp}
+                  {msg.isUser ? user?.fullName || "You" : "ParaDoc"} •{" "}
+                  {msg.timestamp}
                 </span>
               </div>
               <div
@@ -397,18 +451,72 @@ export default function SymptomInput({
           className="flex-1 rounded-l-lg border border-r-0 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 p-3 text-gray-700 dark:text-gray-200 shadow-inner focus:outline-none focus:ring-2 focus:ring-rose-500 dark:focus:ring-rose-400 font-body transition-all duration-200"
           disabled={isLoading}
         />
-        <Button
-          type="submit"
-          disabled={isLoading || !input.trim()}
-          className="rounded-l-none bg-gradient-to-r from-rose-500 to-rose-400 hover:from-rose-600 hover:to-rose-500 dark:from-rose-600 dark:to-rose-500 dark:hover:from-rose-700 dark:hover:to-rose-600 text-white font-medium px-4 h-[46px] transition-all duration-200 shadow-md"
-        >
-          {isLoading ? (
-            <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            <SendHorizontal size={18} className="transform hover:translate-x-0.5 transition-transform" />
-          )}
-        </Button>
+        {isLoading ? (
+          <Button
+            type="button"
+            onClick={handleCancelSubmission}
+            className="rounded-l-none bg-gradient-to-r from-red-500 to-red-400 hover:from-red-600 hover:to-red-500 dark:from-red-600 dark:to-red-500 dark:hover:from-red-700 dark:hover:to-red-600 text-white font-medium px-4 h-[46px] transition-all duration-200 shadow-md"
+          >
+            <div className="flex items-center">
+              <StopCircleIcon
+                size={18}
+                className="transform hover:translate-x-0.5 transition-transform scale-150"
+              />
+            </div>
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            disabled={!input.trim()}
+            className="rounded-l-none bg-gradient-to-r from-rose-500 to-rose-400 hover:from-rose-600 hover:to-rose-500 dark:from-rose-600 dark:to-rose-500 dark:hover:from-rose-700 dark:hover:to-rose-600 text-white font-medium px-4 h-[46px] transition-all duration-200 shadow-md"
+          >
+            <SendHorizontal
+              size={18}
+              className="transform hover:translate-x-0.5 transition-transform"
+            />
+          </Button>
+        )}
       </form>
     </div>
   );
 }
+
+// Add this function to your component or import it from utils/gemini-api.ts
+const generateMedicalSimulationWithAbort = async (
+  symptom: string,
+  signal?: AbortSignal,
+  choices: TimelineChoice[] = [
+    "do nothing",
+    "seek medical attention",
+    "self-medicate with over-the-counter remedies",
+  ]
+): Promise<SimulationResult> => {
+  try {
+    const response = await fetch("/api/test-gemini", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        symptom,
+        choices,
+      }),
+      signal, // Pass the abort signal to fetch
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.status === "success") {
+      return data.data;
+    } else {
+      throw new Error(data.message || "Failed to generate simulations");
+    }
+  } catch (error) {
+    console.error("Error in generateMedicalSimulation:", error);
+    throw error;
+  }
+};
