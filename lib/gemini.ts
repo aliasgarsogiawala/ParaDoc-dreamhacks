@@ -61,7 +61,7 @@ export async function generateHealthTimelines(
 
     Your task:
 
-    1. Based on the complexity and ambiguity of the symptom described, generate **between 5 to 7 unique decision paths** a patient might realistically consider. Do not always assume 3. Simple symptoms might yield 2–3 paths, complex ones up to 7.
+    1. Based on the complexity and ambiguity of the symptom described, generate **between 5 to 6 unique decision paths** a patient might realistically consider. Do not always assume 3. Simple symptoms might yield 2–3 paths, complex ones up to 7.
     2. Each decision path must describe a clearly distinct action the patient could take (e.g., doing nothing, visiting a clinic, self-medicating, consulting a friend, trying alternative therapy, etc.).
     3. For each path, simulate a 7-day progression (Days 1 through 7). Include:
        - Daily symptom progression
