@@ -112,3 +112,5 @@ ParaDoc is a simulation tool designed for educational purposes only. It is not a
 ---
 
 *ParaDoc shows you alternate health futures — because the best way to make decisions today is to see the consequences of tomorrow.*
+
+### Made with ❤️ by Aliasgar , Bhadra and Kavya
