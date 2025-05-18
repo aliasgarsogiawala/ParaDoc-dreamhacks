@@ -569,14 +569,6 @@ export default function Home() {
                 </div>
               </motion.div>
             </main>
-
-            <FloatingActionButton
-              icon={<Mic size={24} />}
-              tooltip="Voice Input"
-              position="bottom-right"
-              className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 shadow-lg shadow-rose-500/20"
-            />
-
             <div className="fixed top-6 right-6 z-50">
             <SignedOut>
               <Button 

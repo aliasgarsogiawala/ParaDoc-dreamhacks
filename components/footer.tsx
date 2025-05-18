@@ -176,7 +176,8 @@ const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>© {new Date().getFullYear()} HealthLore. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} ParaDoc. All rights reserved.</p>
+          <p className="mt-2">Made with ❤️ by Bhadra, Aliasgar, Kavya</p>
         </div>
       </div>
     </footer>
