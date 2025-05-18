@@ -85,6 +85,7 @@ ParaDoc is a simulation tool designed for educational purposes only. It is not a
 - Medical advisors who provided guidance on symptom progression accuracy
 - DreamHacks for inspiring this healthcare innovation
 
+
 ---
 
 *ParaDoc shows you alternate health futures — because the best way to make decisions today is to see the consequences of tomorrow.*
