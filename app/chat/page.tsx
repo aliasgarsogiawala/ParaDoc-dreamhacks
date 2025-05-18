@@ -27,6 +27,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { generateMedicalSimulation } from "@/utils/gemini-api";
 
 // Health tips that will rotate
 const healthTips = [
@@ -154,7 +155,11 @@ export default function Home() {
     };
   }, []);
 
-  const handleSymptomSubmit = () => {};
+ const handleSymptomSubmit = (symptom: string) => {
+  // We're now handling the API call directly in the SymptomInput component
+  // This function just provides a hook for potential future functionality or logging
+  console.log("Symptom submitted:", symptom);
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-rose-50 to-white dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-500 overflow-hidden max-w-5xl mx-auto">

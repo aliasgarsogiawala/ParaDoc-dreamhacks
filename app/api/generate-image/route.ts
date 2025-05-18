@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateHealthImage, generateTimelineVisualizations, testImageGeneration } from '@/lib/gemini-img';
-import { generateHealthTimelines } from '@/lib/gemini-text';
+import { generateHealthTimelines } from '@/lib/gemini';
 
 export async function POST(request: Request) {
   try {
